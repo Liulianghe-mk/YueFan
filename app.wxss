@@ -1,0 +1,20 @@
+/**app.wxss 全局主题（约饭小程序） **/
+page {
+  --theme-bg: #faf7f2;
+  --theme-primary: #a8483c;
+  --theme-primary-dark: #94382d;
+  --theme-text: #3d2f2c;
+  --theme-text-sub: #7a726a;
+  --theme-card: #ffffff;
+  --theme-tint: #f3ebe3;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 200rpx 0;
+  box-sizing: border-box;
+} 

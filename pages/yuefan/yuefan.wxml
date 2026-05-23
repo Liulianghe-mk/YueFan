@@ -1,0 +1,76 @@
+<view class="page-container">
+  <view class="yf-status" style="height: {{statusBarHeight}}px;"></view>
+
+  <view class="yf-hero">
+    <text class="yf-title">约饭列表</text>
+    <text class="yf-subtitle">发现城市里的温暖滋味与有趣灵魂</text>
+  </view>
+
+  <scroll-view scroll-y class="content-scroll" enhanced show-scrollbar="{{false}}">
+    <view class="yf-list">
+      <view class="yf-card" wx:for="{{events}}" wx:key="id" bindtap="onOpenDetail" data-id="{{item.id}}">
+        <view class="yf-cover-wrap">
+          <image class="yf-cover" src="{{item.cover}}" mode="aspectFill"></image>
+          <view class="yf-cover-badge">
+            <text>{{item.joined}}/{{item.total}} 位已加入</text>
+          </view>
+        </view>
+
+        <view class="yf-card-body">
+          <view class="yf-meta-row">
+            <text class="yf-tag">{{item.tag}}</text>
+            <text class="yf-loc">{{item.distance}} · {{item.district}}</text>
+          </view>
+          <text class="yf-card-title">{{item.title}}</text>
+          <text class="yf-desc">{{item.desc}}</text>
+
+          <view class="yf-host">
+            <view class="yf-host-avatar-wrap">
+              <image class="yf-host-avatar" src="{{item.hostAvatar}}" mode="aspectFill"></image>
+              <view class="yf-host-star">★</view>
+            </view>
+            <view class="yf-host-text">
+              <text class="yf-host-name">{{item.hostName}}</text>
+              <text class="yf-host-sub">{{item.hostRating}} · {{item.hostBadge}}</text>
+            </view>
+          </view>
+
+          <view class="yf-actions" catchtap="onStopBubble">
+            <view class="yf-btn yf-btn-outline" catchtap="onOpenDetail" data-id="{{item.id}}">查看详情</view>
+            <view class="yf-btn yf-btn-solid {{item.joinedByMe || item.pendingByMe ? 'yf-btn--joined' : ''}}" catchtap="onJoinTap" data-id="{{item.id}}">{{item.joinedByMe ? '已加入' : (item.pendingByMe ? '待审核' : (item.canJoin ? '立即加入' : '查看'))}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="scroll-bottom-gap"></view>
+  </scroll-view>
+
+  <view class="tab-bar">
+    <view class="tab-bar-inner">
+      <view
+        class="tab-highlight"
+        style="{{tabHighlightStyle}}"
+      >
+        <view class="tab-highlight-inner"></view>
+      </view>
+      <view class="tab-row">
+        <view
+          wx:for="{{tabs}}"
+          wx:key="id"
+          class="tab-item {{activeTab === item.id ? 'tab-item--active' : ''}}"
+          bindtap="switchTab"
+          data-tab="{{item.id}}"
+          hover-class="tab-item-hover"
+        >
+          <image
+            class="tab-ico {{activeTab === item.id ? 'tab-ico--on' : ''}}"
+            src="{{item.icon}}"
+            mode="aspectFit"
+          />
+          <text class="tab-txt {{activeTab === item.id ? 'tab-txt--on' : ''}}">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

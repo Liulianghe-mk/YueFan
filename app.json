@@ -1,0 +1,34 @@
+{
+  "pages": [
+    "pages/shouye/shouye",
+    "pages/login/login",
+    "pages/shouye-search/shouye-search",
+    "pages/shouye-recommend-detail/shouye-recommend-detail",
+    "pages/shouye-recommend-list/shouye-recommend-list",
+    "pages/shouye-meetup-list/shouye-meetup-list",
+    "pages/yuefan/yuefan",
+    "pages/yuefan-detail/yuefan-detail",
+    "pages/faqi/faqi",
+    "pages/dongtai/dongtai",
+    "pages/dongtai-publish/dongtai-publish",
+    "pages/dongtai-detail/dongtai-detail",
+    "pages/profile-detail/profile-detail",
+    "pages/wode/wode",
+    "pages/wode-friends/wode-friends",
+    "pages/wode-activity-detail/wode-activity-detail",
+    "pages/sixin-list/sixin-list",
+    "pages/sixin-chat/sixin-chat",
+    "pages/index/index",
+    "pages/logs/logs"
+    
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "Weixin",
+    "navigationBarBackgroundColor": "#ffffff"
+  },
+  "style": "v2",
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

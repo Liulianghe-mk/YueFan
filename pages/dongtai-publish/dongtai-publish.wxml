@@ -1,0 +1,64 @@
+<scroll-view class="page-scroll" scroll-y enhanced show-scrollbar="{{false}}">
+  <view class="pub-body">
+    <text class="pub-hint">分享你的约饭体验、探店或与朋友的聚餐瞬间。</text>
+
+    <text class="pub-label">动态正文</text>
+    <view class="pub-card">
+      <textarea
+        class="pub-textarea"
+        placeholder="写点什么…"
+        placeholder-class="pub-ph"
+        maxlength="2000"
+        value="{{content}}"
+        bindinput="onContentInput"
+        auto-height
+      />
+    </view>
+
+    <text class="pub-label">配图</text>
+    <view class="pub-card pub-media-card">
+      <view wx:if="{{imagePath}}" class="pub-preview-wrap">
+        <image class="pub-preview" src="{{imagePath}}" mode="aspectFill"></image>
+        <view class="pub-preview-del" bindtap="clearImage" hover-class="pub-preview-del-hover">✕</view>
+      </view>
+      <view wx:else class="pub-add-photo" bindtap="chooseImage" hover-class="pub-add-photo-hover">
+        <text class="pub-add-ico">＋</text>
+        <text class="pub-add-txt">添加图片</text>
+      </view>
+    </view>
+
+    <text class="pub-label">地点（选填）</text>
+    <view class="pub-card">
+      <input
+        class="pub-input"
+        placeholder="例如：静安区 · The Commune Social"
+        placeholder-class="pub-ph"
+        value="{{location}}"
+        bindinput="onLocationInput"
+      />
+    </view>
+
+    <text class="pub-label">聚会人数角标（选填）</text>
+    <view class="pub-card">
+      <input
+        class="pub-input"
+        placeholder="例如：6人已聚"
+        placeholder-class="pub-ph"
+        value="{{gatherBadge}}"
+        bindinput="onGatherInput"
+      />
+    </view>
+  </view>
+
+  <view class="pub-bottom-spacer"></view>
+</scroll-view>
+
+<view class="pub-footer">
+  <view
+    class="pub-submit {{publishing ? 'pub-submit--disabled' : ''}}"
+    bindtap="onPublish"
+    hover-class="pub-submit-hover"
+  >
+    发布
+  </view>
+</view>

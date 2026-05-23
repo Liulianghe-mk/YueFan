@@ -1,0 +1,108 @@
+<view class="page">
+  <view class="chat-status" style="height: {{statusBarHeight}}px;"></view>
+  <view class="chat-nav">
+    <view class="chat-back" bindtap="onBack" hover-class="chat-back-hover">‹</view>
+    <view class="chat-peer">
+      <image class="chat-peer-avatar" src="{{peerAvatar}}" mode="aspectFill" />
+      <view class="chat-peer-text">
+        <text class="chat-peer-name">{{peerName}}</text>
+        <text wx:if="{{contextLabel}}" class="chat-peer-sub">{{contextLabel}}</text>
+        <text wx:else class="chat-peer-sub">约饭私信 · 在线</text>
+      </view>
+    </view>
+    <view class="chat-nav-ph"></view>
+  </view>
+
+  <scroll-view
+    scroll-y
+    class="chat-scroll"
+    scroll-into-view="{{scrollIntoView}}"
+    scroll-with-animation
+    enhanced
+    show-scrollbar="{{false}}"
+  >
+    <view class="chat-inner">
+      <view wx:if="{{contextLabel}}" class="chat-context-banner">
+        <text class="chat-context-ico">🍽</text>
+        <text class="chat-context-txt">关于「{{contextLabel}}」的对话</text>
+      </view>
+
+      <block wx:for="{{messages}}" wx:key="id">
+        <view id="msg-{{item.id}}" class="chat-msg-row {{item.from === 'me' ? 'chat-msg-row--me' : 'chat-msg-row--peer'}}">
+          <image
+            wx:if="{{item.from !== 'me'}}"
+            class="chat-bubble-avatar"
+            src="{{peerAvatar}}"
+            mode="aspectFill"
+          />
+          <view class="chat-bubble-wrap">
+            <view class="chat-bubble {{item.from === 'me' ? 'chat-bubble--me' : 'chat-bubble--peer'}}">
+              <text class="chat-bubble-text" user-select>{{item.content}}</text>
+            </view>
+            <text class="chat-msg-time">{{item.time}}</text>
+          </view>
+          <image
+            wx:if="{{item.from === 'me'}}"
+            class="chat-bubble-avatar"
+            src="{{meAvatar}}"
+            mode="aspectFill"
+          />
+        </view>
+      </block>
+
+      <view wx:if="{{!messages.length}}" class="chat-welcome">
+        <text class="chat-welcome-ico">👋</text>
+        <text class="chat-welcome-txt">和 {{peerName}} 打个招呼吧</text>
+      </view>
+
+      <view class="chat-scroll-gap"></view>
+    </view>
+  </scroll-view>
+
+  <view class="chat-quick">
+    <view
+      class="chat-quick-chip"
+      bindtap="onQuickTap"
+      data-text="你好，我对这场约饭很感兴趣～"
+      hover-class="chat-quick-hover"
+    >
+      感兴趣
+    </view>
+    <view
+      class="chat-quick-chip"
+      bindtap="onQuickTap"
+      data-text="请问还有名额吗？"
+      hover-class="chat-quick-hover"
+    >
+      问名额
+    </view>
+    <view
+      class="chat-quick-chip"
+      bindtap="onQuickTap"
+      data-text="我这边时间可以的，地点方便发一下吗？"
+      hover-class="chat-quick-hover"
+    >
+      确认时间
+    </view>
+  </view>
+
+  <view class="chat-input-bar">
+    <input
+      class="chat-input"
+      placeholder="输入消息…"
+      placeholder-class="chat-ph"
+      value="{{inputText}}"
+      bindinput="onInput"
+      confirm-type="send"
+      bindconfirm="onSend"
+      adjust-position
+    />
+    <view
+      class="chat-send {{sending ? 'chat-send--busy' : ''}} {{inputText ? 'chat-send--on' : ''}}"
+      bindtap="onSend"
+      hover-class="chat-send-hover"
+    >
+      发送
+    </view>
+  </view>
+</view>

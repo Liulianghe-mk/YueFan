@@ -1,0 +1,167 @@
+<!-- index.wxml -->
+<view class="page-container">
+  <!-- 1. 顶部标题栏 -->
+  <view class="header">
+    <view class="header-left">
+      <view class="logo-icon">🍴</view>
+      <text class="brand-name">约饭 Yuefan</text>
+    </view>
+    <view class="search-box" bindtap="onSearchTap" hover-class="search-box-hover">
+      <text class="search-icon">🔍</text>
+      <text class="search-placeholder">搜索...</text>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="content-scroll" enhanced show-scrollbar="{{false}}">
+    <!-- 2. 分类滑动 -->
+    <view class="category-wrapper">
+      <scroll-view scroll-x class="category-scroll" enhanced show-scrollbar="{{false}}">
+        <view
+          wx:for="{{categories}}"
+          wx:key="id"
+          class="category-item {{activeCategory === item.id ? 'active' : ''}}"
+          data-id="{{item.id}}"
+          bindtap="switchCategory"
+        >
+          {{item.name}}
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 3. 为你推荐 -->
+    <view class="section">
+      <view class="section-title-wrap">
+        <text class="title">为你推荐</text>
+        <text class="more" bindtap="onRecommendMoreTap" hover-class="more-hover">查看全部</text>
+      </view>
+      
+      <view class="recommend-swiper-wrap">
+        <swiper
+          class="recommend-swiper"
+          indicator-dots="{{false}}"
+          circular="{{recommendations.length > 1}}"
+          autoplay="{{false}}"
+          current="{{recommendCurrent}}"
+          duration="420"
+          easing-function="easeInOutCubic"
+          bindchange="onRecommendSwiperChange"
+        >
+          <swiper-item wx:for="{{recommendations}}" wx:key="id" wx:for-item="rec">
+            <view
+              class="recommend-card recommend-card--swiper"
+              bindtap="onRecommendTap"
+              data-id="{{rec.id}}"
+              hover-class="recommend-card-hover"
+            >
+              <view class="image-area">
+                <image class="main-img" src="{{rec.image}}" mode="aspectFill"></image>
+                <view class="rating">
+                  <text class="star">★</text>
+                  <text>{{rec.rating}}</text>
+                </view>
+              </view>
+              <view class="card-bottom">
+                <view class="card-left">
+                  <text class="card-name">{{rec.name}}</text>
+                  <view class="tags">
+                    <text wx:for="{{rec.tags}}" wx:key="*this" wx:for-item="tag" class="tag">{{tag}}</text>
+                  </view>
+                </view>
+                <view class="card-right">
+                  <text class="price">¥{{rec.price}}</text>
+                  <text class="unit">人均</text>
+                </view>
+              </view>
+            </view>
+          </swiper-item>
+        </swiper>
+        <view class="recommend-dots" wx:if="{{recommendations.length > 1}}">
+          <view
+            wx:for="{{recommendations}}"
+            wx:key="id"
+            wx:for-index="di"
+            class="recommend-dot {{recommendSwiperIndex === di ? 'recommend-dot--on' : ''}}"
+          ></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 4. 附近的约饭 (重点优化此处布局) -->
+    <view class="section">
+      <view class="section-title-wrap">
+        <text class="title">附近的约饭</text>
+        <text wx:if="{{showMeetupMore}}" class="more" bindtap="onMeetupMoreTap" hover-class="more-hover">查看更多</text>
+      </view>
+
+      <view class="meetup-list">
+        <view
+          wx:for="{{meetups}}"
+          wx:key="id"
+          wx:for-item="m"
+          class="meetup-card"
+          bindtap="onMeetupTap"
+          data-id="{{m.id}}"
+          hover-class="meetup-card-hover"
+        >
+          <view class="avatar-box">
+            <image class="avatar {{m.verified ? 'ring' : ''}}" src="{{m.hostAvatar}}" mode="aspectFill"></image>
+            <view wx:if="{{m.verified}}" class="v-badge">✓</view>
+          </view>
+
+          <view class="meetup-body">
+            <text class="m-title">{{m.title}}</text>
+            <view class="m-info">
+              <text class="m-icon">📍</text>
+              <text class="m-text">{{m.location}}</text>
+            </view>
+            <view class="m-meta">
+              <view class="time-box">
+                <text class="m-icon red">🕒</text>
+                <text class="m-text dark">{{m.time}}</text>
+              </view>
+              <view class="count-badge {{m.badgeActive ? 'active' : ''}}">
+                <text>👥 {{m.joined}}/{{m.total}} 已加入</text>
+              </view>
+            </view>
+          </view>
+
+          <view class="m-action">
+            <view class="btn {{m.ctaPrimary ? 'primary-btn' : 'gray-btn'}}">{{m.ctaLabel}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部占位：scroll-view 的 padding-bottom 常不参与滚动高度，用块级占位保证滑到底不被底栏挡 -->
+    <view class="scroll-bottom-gap"></view>
+  </scroll-view>
+
+  <!-- 5. 底部导航：滑动流动高亮 + 有机形变（非正圆） -->
+  <view class="tab-bar">
+    <view class="tab-bar-inner">
+      <view
+        class="tab-highlight"
+        style="{{tabHighlightStyle}}"
+      >
+        <view class="tab-highlight-inner"></view>
+      </view>
+      <view class="tab-row">
+        <view
+          wx:for="{{tabs}}"
+          wx:key="id"
+          class="tab-item {{activeTab === item.id ? 'tab-item--active' : ''}}"
+          bindtap="switchTab"
+          data-tab="{{item.id}}"
+          hover-class="tab-item-hover"
+        >
+          <image
+            class="tab-ico {{activeTab === item.id ? 'tab-ico--on' : ''}}"
+            src="{{item.icon}}"
+            mode="aspectFit"
+          />
+          <text class="tab-txt {{activeTab === item.id ? 'tab-txt--on' : ''}}">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

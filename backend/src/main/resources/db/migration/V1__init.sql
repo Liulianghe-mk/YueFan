@@ -1,0 +1,24 @@
+CREATE TABLE admin_user (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(64) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role VARCHAR(32) NOT NULL,
+    enabled BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uk_admin_username UNIQUE (username)
+);
+
+CREATE TABLE meetup (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    location_label VARCHAR(255) NOT NULL,
+    time_label VARCHAR(120) NOT NULL,
+    cover_url VARCHAR(1024) NOT NULL,
+    joined_count INT NOT NULL DEFAULT 0,
+    total_slots INT NOT NULL DEFAULT 8,
+    status VARCHAR(32) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_meetup_status ON meetup (status);

@@ -1,0 +1,45 @@
+<view class="page">
+  <view class="sx-status" style="height: {{statusBarHeight}}px;"></view>
+  <view class="sx-nav">
+    <view class="sx-back" bindtap="onBack" hover-class="sx-back-hover">‹</view>
+    <text class="sx-title">私信</text>
+    <view class="sx-nav-ph"></view>
+  </view>
+
+  <scroll-view scroll-y class="sx-scroll" enhanced show-scrollbar="{{false}}">
+    <view wx:if="{{conversations.length}}" class="sx-list">
+      <view
+        wx:for="{{conversations}}"
+        wx:key="id"
+        class="sx-row"
+        bindtap="onOpenChat"
+        data-id="{{item.id}}"
+        hover-class="sx-row-hover"
+      >
+        <view class="sx-avatar-wrap">
+          <image class="sx-avatar" src="{{item.peerAvatar}}" mode="aspectFill" />
+          <view wx:if="{{item.unread > 0}}" class="sx-unread-dot"></view>
+        </view>
+        <view class="sx-body">
+          <view class="sx-row-top">
+            <text class="sx-name">{{item.peerName}}</text>
+            <text class="sx-time">{{item.lastTime}}</text>
+          </view>
+          <text wx:if="{{item.contextLabel}}" class="sx-context">{{item.contextLabel}}</text>
+          <view class="sx-row-bottom">
+            <text class="sx-preview {{item.unread > 0 ? 'sx-preview--unread' : ''}}">{{item.lastMessage || '开始聊天吧'}}</text>
+            <view wx:if="{{item.unread > 0}}" class="sx-badge">{{item.unread > 99 ? '99+' : item.unread}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="sx-empty">
+      <text class="sx-empty-ico">💬</text>
+      <text class="sx-empty-title">暂无私信</text>
+      <text class="sx-empty-desc">在约饭详情或个人主页点「私聊 / 私信」即可发起对话</text>
+    </view>
+
+    <view class="sx-scroll-gap"></view>
+  </scroll-view>
+</view>

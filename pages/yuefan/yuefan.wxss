@@ -1,0 +1,348 @@
+page {
+  background-color: #faf7f2;
+  height: 100%;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.yf-status {
+  width: 100%;
+  flex-shrink: 0;
+  background: #faf7f2;
+}
+
+.yf-hero {
+  flex-shrink: 0;
+  padding: 8rpx 36rpx 28rpx;
+  background: #faf7f2;
+}
+
+.yf-title {
+  display: block;
+  font-size: 48rpx;
+  font-weight: 800;
+  color: #2a2220;
+  letter-spacing: -0.5rpx;
+}
+
+.yf-subtitle {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 26rpx;
+  color: #8a8178;
+  line-height: 1.45;
+}
+
+.content-scroll {
+  flex: 1;
+  height: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.scroll-bottom-gap {
+  width: 100%;
+  box-sizing: content-box;
+  height: 288rpx;
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.yf-list {
+  padding: 0 28rpx 24rpx;
+}
+
+.yf-card {
+  background: #ffffff;
+  border-radius: 28rpx;
+  overflow: hidden;
+  margin-bottom: 32rpx;
+  box-shadow: 0 8rpx 40rpx rgba(42, 34, 32, 0.06);
+}
+
+.yf-cover-wrap {
+  position: relative;
+  width: 100%;
+  height: 360rpx;
+}
+
+.yf-cover {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.yf-cover-badge {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  padding: 10rpx 22rpx;
+  border-radius: 999rpx;
+  background: rgba(42, 34, 32, 0.45);
+  backdrop-filter: blur(8px);
+}
+
+.yf-cover-badge text {
+  font-size: 22rpx;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.yf-card-body {
+  padding: 28rpx 28rpx 32rpx;
+}
+
+.yf-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.yf-tag {
+  flex-shrink: 0;
+  padding: 8rpx 20rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  font-weight: 700;
+  color: #2d5a3d;
+  background: #e3f2e6;
+}
+
+.yf-loc {
+  flex: 1;
+  min-width: 0;
+  text-align: right;
+  font-size: 24rpx;
+  color: #9a928a;
+}
+
+.yf-card-title {
+  display: block;
+  font-size: 34rpx;
+  font-weight: 800;
+  color: #3d2f2c;
+  line-height: 1.35;
+  margin-bottom: 16rpx;
+}
+
+.yf-desc {
+  display: block;
+  font-size: 26rpx;
+  color: #7a726a;
+  line-height: 1.55;
+  margin-bottom: 28rpx;
+}
+
+.yf-host {
+  display: flex;
+  align-items: center;
+  padding: 22rpx 24rpx;
+  border-radius: 20rpx;
+  background: #f3ebe3;
+  margin-bottom: 28rpx;
+}
+
+.yf-host-avatar-wrap {
+  position: relative;
+  width: 88rpx;
+  height: 88rpx;
+  flex-shrink: 0;
+}
+
+.yf-host-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: block;
+}
+
+.yf-host-star {
+  position: absolute;
+  right: -2rpx;
+  bottom: -2rpx;
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #f0d78c, #c9a227);
+  color: #ffffff;
+  font-size: 18rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3rpx solid #faf7f2;
+  line-height: 1;
+}
+
+.yf-host-text {
+  margin-left: 22rpx;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.yf-host-name {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #3d2f2c;
+}
+
+.yf-host-sub {
+  margin-top: 6rpx;
+  font-size: 24rpx;
+  color: #7a726a;
+}
+
+.yf-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.yf-btn {
+  flex: 1;
+  text-align: center;
+  padding: 22rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.yf-btn-outline {
+  color: #7d4f3a;
+  background: transparent;
+  border: 2rpx solid #b8957a;
+}
+
+.yf-btn-solid {
+  color: #ffffff;
+  background: #a8483c;
+  border: 2rpx solid #a8483c;
+}
+
+/* 与首页一致的底部导航 */
+.tab-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  box-sizing: border-box;
+  min-height: 176rpx;
+  background: #ffffff;
+  border-radius: 52rpx 52rpx 0 0;
+  box-shadow: 0 -8rpx 36rpx rgba(74, 61, 57, 0.08);
+  padding: 20rpx 16rpx calc(14rpx + constant(safe-area-inset-bottom));
+  padding-bottom: calc(14rpx + env(safe-area-inset-bottom));
+}
+
+.tab-bar-inner {
+  position: relative;
+  width: 100%;
+}
+
+.tab-highlight {
+  position: absolute;
+  left: 0;
+  bottom: 2rpx;
+  z-index: 0;
+  width: 20%;
+  height: 124rpx;
+  pointer-events: none;
+  transition: transform 0.45s cubic-bezier(0.33, 1.12, 0.36, 1);
+  will-change: transform;
+}
+
+.tab-highlight-inner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 90%;
+  height: 92%;
+  max-width: 134rpx;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  background: linear-gradient(138deg, #e56d64 0%, #c44d44 38%, #b03d36 100%);
+  box-shadow: 0 10rpx 28rpx rgba(196, 77, 68, 0.32), 0 0 0 1rpx rgba(255, 255, 255, 0.12) inset;
+  animation: tab-flow-morph 4.5s ease-in-out infinite;
+}
+
+@keyframes tab-flow-morph {
+  0%,
+  100% {
+    border-radius: 42% 58% 50% 50% / 50% 48% 52% 50%;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  33% {
+    border-radius: 54% 46% 44% 56% / 46% 54% 50% 50%;
+    transform: translate(-50%, -50%) scale(0.97);
+  }
+  66% {
+    border-radius: 46% 54% 56% 44% / 52% 46% 48% 52%;
+    transform: translate(-50%, -50%) scale(1.03);
+  }
+}
+
+.tab-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+}
+
+.tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+  padding-bottom: 12rpx;
+}
+
+.tab-item--active {
+  padding-bottom: 12rpx;
+}
+
+.tab-item-hover {
+  opacity: 0.88;
+}
+
+.tab-ico {
+  width: 56rpx;
+  height: 56rpx;
+  flex-shrink: 0;
+  transition: filter 0.32s ease, transform 0.35s cubic-bezier(0.33, 1.12, 0.36, 1);
+}
+
+.tab-item--active .tab-ico {
+  transform: translateY(-2rpx);
+}
+
+.tab-ico--on {
+  filter: brightness(0) invert(1);
+}
+
+.tab-txt {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #4a3d39;
+  line-height: 1.15;
+  transition: color 0.3s ease, transform 0.35s cubic-bezier(0.33, 1.12, 0.36, 1);
+}
+
+.tab-item--active .tab-txt {
+  transform: translateY(-1rpx);
+}
+
+.tab-txt--on {
+  color: #ffffff;
+}

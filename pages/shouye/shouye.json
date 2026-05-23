@@ -1,0 +1,7 @@
+{
+    "navigationBarTitleText": "约饭 Yuefan",
+    "navigationBarBackgroundColor": "#faf7f2",
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": true,
+    "usingComponents": {}
+  }

@@ -1,0 +1,43 @@
+<view class="page">
+  <view wx:if="{{loading && !list.length}}" class="state">
+    <text class="state-txt">加载中…</text>
+  </view>
+
+  <view wx:elif="{{!list.length}}" class="state">
+    <text class="state-title">暂无推荐</text>
+    <text class="state-txt">管理端发布后会显示在这里</text>
+  </view>
+
+  <scroll-view wx:else scroll-y class="scroll" enhanced show-scrollbar="{{false}}">
+    <view class="hint">共 {{list.length}} 家精选好店</view>
+    <view
+      wx:for="{{list}}"
+      wx:key="id"
+      wx:for-item="rec"
+      class="card"
+      bindtap="onItemTap"
+      data-id="{{rec.id}}"
+      hover-class="card-hover"
+    >
+      <view class="thumb-wrap">
+        <image class="thumb" src="{{rec.image}}" mode="aspectFill" />
+        <view class="rating">
+          <text class="star">★</text>
+          <text>{{rec.rating}}</text>
+        </view>
+      </view>
+      <view class="body">
+        <text class="name">{{rec.name}}</text>
+        <view class="tags">
+          <text wx:for="{{rec.tags}}" wx:key="*this" wx:for-item="tag" class="tag">{{tag}}</text>
+        </view>
+        <view class="price-row">
+          <text class="price">¥{{rec.price}}</text>
+          <text class="unit">人均</text>
+        </view>
+      </view>
+      <text class="chev">›</text>
+    </view>
+    <view class="foot-gap"></view>
+  </scroll-view>
+</view>

@@ -1,0 +1,123 @@
+<view class="page" wx:if="{{post}}">
+  <view class="status" style="height: {{statusBarHeight}}px;"></view>
+  <view class="nav">
+    <view class="nav-back" bindtap="onBack" hover-class="nav-back-hover">‹</view>
+    <text class="nav-title">动态详情</text>
+    <button class="nav-share" open-type="share" hover-class="nav-share-hover">分享</button>
+  </view>
+
+  <scroll-view scroll-y class="main" enhanced show-scrollbar="{{false}}">
+    <view class="author">
+      <image class="author-av" src="{{post.authorAvatar}}" mode="aspectFill"></image>
+      <view class="author-mid">
+        <text class="author-name">{{post.authorName}}</text>
+        <text class="author-time">{{post.timeText}}</text>
+      </view>
+      <view
+        wx:if="{{post.authorProfileId}}"
+        class="follow {{post.followed ? 'follow--on' : ''}}"
+        bindtap="onFollowTap"
+        hover-class="follow-hover"
+      >
+        {{post.followed ? '已关注' : '关注'}}
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="swiper-wrap">
+        <swiper
+          class="swiper"
+          circular="{{false}}"
+          indicator-dots="{{false}}"
+          bindchange="onSwiperChange"
+        >
+          <swiper-item wx:for="{{post.images}}" wx:for-index="imgIdx" wx:key="imgIdx">
+            <image class="swiper-img" src="{{item}}" mode="aspectFill"></image>
+          </swiper-item>
+        </swiper>
+        <view class="swiper-badge">{{swiperCurrent + 1}}/{{imgTotal}}</view>
+        <view wx:if="{{post.gatherBadge}}" class="gather-corner">{{post.gatherBadge}}</view>
+      </view>
+
+      <text class="body">{{post.content}}</text>
+
+      <view class="loc-pill">
+        <text class="loc-ico">📍</text>
+        <text class="loc-txt">{{post.location}}</text>
+      </view>
+
+      <view class="stats-line"></view>
+      <view class="stats">
+        <text class="stat-i stat-i--like {{post.liked ? 'stat-i--on' : ''}}" catchtap="onLikeTap">♥ {{post.likes}}</text>
+        <text class="stat-i">💬 {{post.comments}}</text>
+        <text class="stat-i">↗ {{post.shares}}</text>
+      </view>
+    </view>
+
+    <view class="cmt-head">评论 ({{post.comments}})</view>
+    <view class="cmt-list">
+      <view class="cmt" wx:for="{{post.commentList}}" wx:key="id">
+        <image class="cmt-av" src="{{item.authorAvatar}}" mode="aspectFill"></image>
+        <view class="cmt-body">
+          <view class="cmt-top">
+            <text class="cmt-name">{{item.authorName}}</text>
+            <text class="cmt-time">{{item.timeText}}</text>
+          </view>
+          <text class="cmt-txt">{{item.content}}</text>
+          <text
+            class="cmt-reply"
+            data-id="{{item.id}}"
+            data-parent-id="{{item.id}}"
+            data-name="{{item.authorName}}"
+            catchtap="onReplyTap"
+          >回复</text>
+          <view class="cmt-replies" wx:if="{{item.replies && item.replies.length}}">
+            <view class="cmt cmt--reply" wx:for="{{item.replies}}" wx:for-item="reply" wx:key="id">
+              <image class="cmt-av cmt-av--sm" src="{{reply.authorAvatar}}" mode="aspectFill"></image>
+              <view class="cmt-body">
+                <view class="cmt-top">
+                  <text class="cmt-name">{{reply.authorName}}</text>
+                  <text class="cmt-time">{{reply.timeText}}</text>
+                </view>
+                <text class="cmt-txt">{{reply.content}}</text>
+                <text
+                  class="cmt-reply"
+                  data-id="{{reply.id}}"
+                  data-parent-id="{{item.id}}"
+                  data-name="{{reply.authorName}}"
+                  catchtap="onReplyTap"
+                >回复</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="scroll-gap"></view>
+  </scroll-view>
+
+  <view class="foot">
+    <view wx:if="{{replyTarget}}" class="foot-reply-bar">
+      <text class="foot-reply-txt">回复 @{{replyTarget.authorName}}</text>
+      <text class="foot-reply-cancel" catchtap="onCancelReply">取消</text>
+    </view>
+    <view class="foot-row">
+      <view class="foot-input-wrap">
+        <input
+          class="foot-inp"
+          placeholder="{{inputPlaceholder}}"
+          placeholder-class="foot-ph"
+          value="{{inputDraft}}"
+          bindinput="onInput"
+          confirm-type="send"
+          bindconfirm="onSend"
+        />
+        <text class="foot-emoji" bindtap="onEmojiTap">😊</text>
+      </view>
+      <view class="foot-send" bindtap="onSend" hover-class="foot-send-hover">
+        <text class="foot-send-ico">➤</text>
+      </view>
+    </view>
+  </view>
+</view>

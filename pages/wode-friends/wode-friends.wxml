@@ -1,0 +1,28 @@
+<view class="page">
+  <view class="status" style="height: {{statusBarHeight}}px;"></view>
+  <view class="nav">
+    <view class="back" bindtap="onBack" hover-class="back-hover">‹</view>
+    <text class="title">结识的好友</text>
+    <view class="nav-ph"></view>
+  </view>
+
+  <scroll-view scroll-y class="scroll" enhanced show-scrollbar="{{false}}">
+    <view wx:if="{{!friends.length}}" class="empty">
+      <text class="empty-ico">👋</text>
+      <text class="empty-txt">还没有关注任何人</text>
+      <text class="empty-sub">在动态或个人主页点「关注」即可结识美食搭子</text>
+    </view>
+    <view
+      wx:for="{{friends}}"
+      wx:key="id"
+      class="row"
+      data-id="{{item.id}}"
+      bindtap="onFriendTap"
+      hover-class="row-hover"
+    >
+      <image class="avatar" src="{{item.avatarUrl}}" mode="aspectFill" />
+      <text class="name">{{item.displayName}}</text>
+      <text class="chev">›</text>
+    </view>
+  </scroll-view>
+</view>

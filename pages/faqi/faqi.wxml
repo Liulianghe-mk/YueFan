@@ -1,0 +1,183 @@
+<view class="page-container">
+  <view class="fq-status" style="height: {{statusBarHeight}}px;"></view>
+
+  <view class="fq-hero">
+    <text class="fq-title">发起约饭</text>
+    <text class="fq-subtitle">填写后将写入服务端 meetup 表（标题、地点、时间、封面、名额、发布状态），管理端「约饭活动」页会自动同步。</text>
+    <text wx:if="{{apiHint}}" class="fq-api-hint">{{apiHint}}</text>
+  </view>
+
+  <scroll-view scroll-y class="content-scroll" enhanced show-scrollbar="{{false}}">
+    <view class="fq-body">
+      <text class="fq-section-label">推荐餐厅（轻点填入）</text>
+      <scroll-view wx:if="{{suggestSpots.length}}" scroll-x class="fq-suggest-scroll" enhanced show-scrollbar="{{false}}">
+        <view class="fq-suggest-row">
+          <view
+            wx:for="{{suggestSpots}}"
+            wx:key="id"
+            class="fq-suggest-card"
+            bindtap="onPickSuggest"
+            data-id="{{item.id}}"
+            hover-class="fq-suggest-card-hover"
+          >
+            <image class="fq-suggest-img" src="{{item.image}}" mode="aspectFill" />
+            <text class="fq-suggest-name">{{item.name}}</text>
+          </view>
+        </view>
+      </scroll-view>
+
+      <text class="fq-section-label">在哪吃？</text>
+      <view class="fq-card">
+        <view class="fq-search">
+          <text class="fq-search-icon">🔍</text>
+          <input
+            class="fq-search-input"
+            placeholder="补充地址、楼层或包厢说明…"
+            placeholder-class="fq-ph"
+            value="{{searchKeyword}}"
+            bindinput="onSearchInput"
+          />
+        </view>
+        <view class="fq-rest-row" wx:if="{{hasRestaurant}}">
+          <image class="fq-rest-img" src="{{restaurant.image}}" mode="aspectFill"></image>
+          <view class="fq-rest-info">
+            <text class="fq-rest-name">{{restaurant.name}}</text>
+            <text class="fq-rest-meta">{{restaurant.meta}}</text>
+          </view>
+          <view class="fq-rest-clear" bindtap="clearRestaurant" hover-class="fq-rest-clear-hover">✕</view>
+        </view>
+      </view>
+
+      <view wx:if="{{!hasRestaurant}}" class="fq-card fq-manual-loc">
+        <text class="fq-manual-label">聚餐地点 / 店名（未选推荐时必填）</text>
+        <input
+          class="fq-manual-input"
+          placeholder="例：静安区南京西路××商场×楼××店"
+          placeholder-class="fq-ph"
+          value="{{locationManual}}"
+          bindinput="onLocationManual"
+        />
+      </view>
+
+      <view class="fq-datetime-row">
+        <picker mode="date" value="{{dateValue}}" bindchange="onDateChange">
+          <view class="fq-date-box">
+            <text class="fq-date-text">{{dateDisplay}}</text>
+            <text class="fq-date-ico">📅</text>
+          </view>
+        </picker>
+        <picker mode="time" value="{{timeValue}}" bindchange="onTimeChange">
+          <view class="fq-time-box">
+            <text class="fq-time-text">{{timeValue}}</text>
+            <text class="fq-time-ico">🕒</text>
+          </view>
+        </picker>
+      </view>
+
+      <view class="fq-card fq-join-card">
+        <view class="fq-join-head">
+          <text class="fq-section-label fq-join-title">谁能参加？</text>
+          <view class="fq-pill">{{peopleBadge}}</view>
+        </view>
+        <slider
+          class="fq-slider"
+          min="{{2}}"
+          max="{{30}}"
+          value="{{maxPeople}}"
+          step="{{1}}"
+          show-value="{{false}}"
+          activeColor="#a8483c"
+          backgroundColor="#e5e0dc"
+          block-size="22"
+          bindchange="onMaxPeopleChange"
+        />
+        <view class="fq-slider-labels">
+          <text>最少 {{minPeople}} 人</text>
+          <text>最多 30 人</text>
+        </view>
+
+        <view class="fq-switch-row">
+          <view class="fq-switch-text">
+            <text class="fq-switch-title">公开约饭</text>
+            <text class="fq-switch-desc">开启写入 status=PUBLISHED，约饭列表可见；关闭为草稿 DRAFT</text>
+          </view>
+          <switch checked="{{publicInvite}}" color="#a8483c" bindchange="onPublicChange" />
+        </view>
+        <view class="fq-switch-row">
+          <view class="fq-switch-text">
+            <text class="fq-switch-title">需要审核</text>
+            <text class="fq-switch-desc">备注写入 title 字段，便于参与者知晓</text>
+          </view>
+          <switch checked="{{requireApproval}}" color="#a8483c" bindchange="onApprovalChange" />
+        </view>
+      </view>
+
+      <text class="fq-section-label">约饭主题</text>
+      <view class="fq-card fq-theme-card">
+        <input
+          class="fq-theme-input"
+          placeholder="例如：周末美食家探索（必填）"
+          placeholder-class="fq-ph"
+          value="{{theme}}"
+          bindinput="onThemeInput"
+        />
+        <textarea
+          class="fq-theme-area"
+          placeholder="补充计划、菜系偏好等（选填，合并写入 title，总长不超过 200 字）"
+          placeholder-class="fq-ph"
+          value="{{description}}"
+          maxlength="{{500}}"
+          bindinput="onDescInput"
+          auto-height
+        />
+      </view>
+    </view>
+
+    <view class="scroll-bottom-gap"></view>
+  </scroll-view>
+
+  <view class="publish-bar">
+    <view
+      class="publish-btn {{submitting ? 'publish-btn--busy' : ''}}"
+      bindtap="onPublish"
+      hover-class="publish-btn-hover"
+    >
+      <block wx:if="{{submitting}}">
+        <text class="publish-ico">⏳</text>
+        <text>提交中…</text>
+      </block>
+      <block wx:else>
+        <text class="publish-ico">🚀</text>
+        <text>立即发布</text>
+      </block>
+    </view>
+  </view>
+
+  <view class="tab-bar">
+    <view class="tab-bar-inner">
+      <view
+        class="tab-highlight"
+        style="{{tabHighlightStyle}}"
+      >
+        <view class="tab-highlight-inner"></view>
+      </view>
+      <view class="tab-row">
+        <view
+          wx:for="{{tabs}}"
+          wx:key="id"
+          class="tab-item {{activeTab === item.id ? 'tab-item--active' : ''}}"
+          bindtap="switchTab"
+          data-tab="{{item.id}}"
+          hover-class="tab-item-hover"
+        >
+          <image
+            class="tab-ico {{activeTab === item.id ? 'tab-ico--on' : ''}}"
+            src="{{item.icon}}"
+            mode="aspectFit"
+          />
+          <text class="tab-txt {{activeTab === item.id ? 'tab-txt--on' : ''}}">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

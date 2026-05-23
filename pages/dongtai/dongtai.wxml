@@ -1,0 +1,126 @@
+<view class="page-container">
+  <view class="status-bar" style="height: {{statusBarHeight}}px;"></view>
+  <view class="nav-bar">
+    <text class="nav-title">动态</text>
+  </view>
+
+  <scroll-view scroll-y class="content-scroll" enhanced show-scrollbar="{{false}}">
+    <view class="section-hosts">
+      <view class="section-hosts-head">
+        <text class="section-hosts-title">热门主理人</text>
+        <text class="section-hosts-more" bindtap="onOpenProfile" data-id="1" hover-class="link-hover">查看全部</text>
+      </view>
+      <scroll-view class="hosts-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+        <view class="hosts-row">
+          <view class="host-item" wx:for="{{popularHosts}}" wx:key="id" bindtap="onOpenProfile" data-id="{{item.id}}">
+            <image class="host-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+            <text class="host-name">{{item.name}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="feed-list">
+      <view
+        class="post-card"
+        wx:for="{{posts}}"
+        wx:for-item="post"
+        wx:key="id"
+        bindtap="onOpenPostDetail"
+        data-id="{{post.id}}"
+      >
+        <view class="post-head">
+          <view
+            class="post-head-profile"
+            catchtap="onOpenProfile"
+            data-id="{{post.authorProfileId || 99}}"
+          >
+            <image class="post-avatar" src="{{post.authorAvatar}}" mode="aspectFill"></image>
+            <view class="post-meta">
+              <text class="post-name">{{post.authorName}}</text>
+              <text class="post-time">{{post.timeText}}</text>
+            </view>
+          </view>
+          <view
+            wx:if="{{post.authorProfileId}}"
+            class="follow-btn {{post.followed ? 'followed' : ''}}"
+            data-influencer-id="{{post.authorProfileId}}"
+            catchtap="onFollowTap"
+          >
+            {{post.followed ? '已关注' : '关注'}}
+          </view>
+        </view>
+
+        <view class="post-media">
+          <image class="post-image" src="{{post.image}}" mode="aspectFill"></image>
+          <view class="gather-badge">{{post.gatherBadge}}</view>
+        </view>
+
+        <view class="post-location">
+          <text class="location-icon">📍</text>
+          <text class="location-text">{{post.location}}</text>
+        </view>
+
+        <text class="post-body">{{post.content}}</text>
+
+        <view class="post-actions">
+          <view class="action-left">
+            <text class="action-item">♥ {{post.likes}}</text>
+            <text class="action-item">💬 {{post.comments}}</text>
+            <text class="action-item">↗ {{post.shares}}</text>
+          </view>
+          <view class="action-right">
+            <view class="reply-stack">
+              <image
+                wx:for="{{post.replyAvatars}}"
+                wx:for-item="av"
+                wx:for-index="ri"
+                wx:key="ri"
+                class="reply-face"
+                style="z-index: {{post.replyAvatars.length - ri}}; margin-left: {{ri === 0 ? 0 : -14}}rpx;"
+                src="{{av}}"
+                mode="aspectFill"
+              ></image>
+            </view>
+            <text wx:if="{{post.replyExtra > 0}}" class="reply-extra">+{{post.replyExtra}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="scroll-bottom-gap"></view>
+  </scroll-view>
+
+  <view class="fab-publish" bindtap="onGoPublish" hover-class="fab-publish-hover">
+    <text class="fab-publish-plus">＋</text>
+    <text class="fab-publish-txt">发布</text>
+  </view>
+
+  <view class="tab-bar">
+    <view class="tab-bar-inner">
+      <view
+        class="tab-highlight"
+        style="{{tabHighlightStyle}}"
+      >
+        <view class="tab-highlight-inner"></view>
+      </view>
+      <view class="tab-row">
+        <view
+          wx:for="{{tabs}}"
+          wx:key="id"
+          class="tab-item {{activeTab === item.id ? 'tab-item--active' : ''}}"
+          bindtap="switchTab"
+          data-tab="{{item.id}}"
+          hover-class="tab-item-hover"
+        >
+          <image
+            class="tab-ico {{activeTab === item.id ? 'tab-ico--on' : ''}}"
+            src="{{item.icon}}"
+            mode="aspectFit"
+          />
+          <text class="tab-txt {{activeTab === item.id ? 'tab-txt--on' : ''}}">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

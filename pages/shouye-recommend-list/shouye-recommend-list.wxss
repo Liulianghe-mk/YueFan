@@ -1,0 +1,147 @@
+page {
+  background: #faf7f2;
+  height: 100%;
+}
+
+.page {
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.scroll {
+  height: 100vh;
+  box-sizing: border-box;
+  padding: 24rpx 32rpx 0;
+}
+
+.hint {
+  font-size: 24rpx;
+  color: #7a726a;
+  margin-bottom: 20rpx;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 24rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 8rpx 32rpx rgba(42, 34, 32, 0.05);
+  border: 1rpx solid #f0ebe6;
+}
+
+.card-hover {
+  opacity: 0.92;
+}
+
+.thumb-wrap {
+  position: relative;
+  width: 200rpx;
+  height: 200rpx;
+  flex-shrink: 0;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.thumb {
+  width: 100%;
+  height: 100%;
+}
+
+.rating {
+  position: absolute;
+  top: 12rpx;
+  right: 12rpx;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 4rpx 12rpx;
+  border-radius: 10rpx;
+  font-size: 20rpx;
+  font-weight: 800;
+  color: #3d2f2c;
+}
+
+.star {
+  color: #c9a227;
+  margin-right: 4rpx;
+}
+
+.body {
+  flex: 1;
+  min-width: 0;
+  margin-left: 24rpx;
+}
+
+.name {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #3d2f2c;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10rpx;
+  gap: 8rpx;
+}
+
+.tag {
+  background: #f5f3f1;
+  color: #7a726a;
+  font-size: 20rpx;
+  font-weight: bold;
+  padding: 4rpx 12rpx;
+  border-radius: 6rpx;
+}
+
+.price-row {
+  margin-top: 12rpx;
+  display: flex;
+  align-items: baseline;
+  gap: 8rpx;
+}
+
+.price {
+  color: #a8483c;
+  font-size: 34rpx;
+  font-weight: 800;
+}
+
+.unit {
+  font-size: 20rpx;
+  color: #7a726a;
+}
+
+.chev {
+  flex-shrink: 0;
+  font-size: 40rpx;
+  color: #c4bdb6;
+  margin-left: 8rpx;
+  font-weight: 300;
+}
+
+.foot-gap {
+  height: 48rpx;
+}
+
+.state {
+  padding: 120rpx 48rpx;
+  text-align: center;
+}
+
+.state-title {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #3d2f2c;
+  margin-bottom: 12rpx;
+}
+
+.state-txt {
+  font-size: 26rpx;
+  color: #7a726a;
+}

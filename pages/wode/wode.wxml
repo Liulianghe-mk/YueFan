@@ -1,0 +1,253 @@
+<view class="page-container">
+  <view class="wd-status" style="height: {{statusBarHeight}}px;"></view>
+
+  <scroll-view scroll-y class="content-scroll" enhanced show-scrollbar="{{false}}">
+    <view class="wd-main">
+      <view class="wd-hero">
+        <view
+          wx:if="{{!loggedIn}}"
+          class="wd-login-pill"
+          bindtap="onOpenLogin"
+          hover-class="wd-hero-hover"
+        >登录 / 注册</view>
+        <view
+          wx:if="{{loggedIn}}"
+          class="wd-edit-hint"
+          bindtap="onEditProfile"
+          hover-class="wd-hero-hover"
+        >点击头像、昵称或简介可修改</view>
+        <view
+          class="wd-avatar-wrap"
+          bindtap="{{loggedIn ? 'onEditProfile' : 'onOpenLogin'}}"
+          hover-class="wd-hero-hover"
+        >
+          <image class="wd-avatar" src="{{user.avatar}}" mode="aspectFill"></image>
+          <view wx:if="{{loggedIn}}" class="wd-avatar-edit">✎</view>
+          <view class="wd-level-pill">
+            <text class="wd-level-star">★</text>
+            <text class="wd-level-txt">{{user.levelText}}</text>
+          </view>
+        </view>
+        <text
+          class="wd-name {{loggedIn ? 'wd-tappable' : ''}}"
+          bindtap="{{loggedIn ? 'onEditProfile' : 'onOpenLogin'}}"
+          hover-class="wd-hero-hover"
+        >{{user.name}}</text>
+        <text
+          class="wd-bio {{loggedIn ? 'wd-tappable' : ''}}"
+          bindtap="{{loggedIn ? 'onEditProfile' : 'onOpenLogin'}}"
+          hover-class="wd-hero-hover"
+        >{{user.bio}}</text>
+      </view>
+
+      <view class="wd-stats-row">
+        <view class="wd-stat-card">
+          <text class="wd-stat-num">{{initiatedCount}}</text>
+          <text class="wd-stat-label">发起的约饭</text>
+        </view>
+        <view class="wd-stat-card" bindtap="onOpenFriends" hover-class="wd-stat-card-hover">
+          <view wx:if="{{friendCount === 0}}" class="wd-stat-num">0</view>
+          <view wx:else class="wd-stat-friends">
+            <view class="wd-stat-face-stack">
+              <image
+                wx:for="{{friendAvatars}}"
+                wx:for-item="fa"
+                wx:for-index="fi"
+                wx:key="fi"
+                class="wd-stat-face"
+                style="z-index: {{friendAvatars.length - fi}}; margin-left: {{fi === 0 ? 0 : -18}}rpx;"
+                src="{{fa}}"
+                mode="aspectFill"
+              ></image>
+            </view>
+            <text wx:if="{{friendExtra > 0}}" class="wd-stat-plus">+{{friendExtra}}</text>
+          </view>
+          <text class="wd-stat-label">结识的好友</text>
+        </view>
+      </view>
+
+      <view wx:if="{{pendingApplicationsTotal > 0}}" class="wd-pending-hint">
+        <text>{{pendingApplicationsTotal}} 条报名待你审核</text>
+      </view>
+
+      <view class="wd-act-tabs">
+        <view
+          class="wd-act-tab {{activityTab === 'upcoming' ? 'wd-act-tab--on' : ''}}"
+          data-tab="upcoming"
+          bindtap="switchActivityTab"
+        >
+          待参加
+        </view>
+        <view
+          class="wd-act-tab {{activityTab === 'ended' ? 'wd-act-tab--on' : ''}}"
+          data-tab="ended"
+          bindtap="switchActivityTab"
+        >
+          已结束
+        </view>
+      </view>
+
+      <view class="wd-act-list" wx:if="{{activityTab === 'upcoming'}}">
+        <view
+          class="wd-act-card"
+          wx:for="{{upcomingActivities}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="onActivityTap"
+        >
+          <view class="wd-act-cover-wrap">
+            <image class="wd-act-cover" src="{{item.cover}}" mode="aspectFill"></image>
+            <view class="wd-act-date">
+              <text class="wd-act-date-m">{{item.month}}</text>
+              <text class="wd-act-date-d">{{item.day}}</text>
+            </view>
+            <view
+              wx:if="{{item.status === 'confirmed'}}"
+              class="wd-act-badge wd-act-badge--ok"
+            >
+              已确认
+            </view>
+            <view
+              wx:elif="{{item.status === 'pending'}}"
+              class="wd-act-badge wd-act-badge--wait"
+            >
+              待审核
+            </view>
+            <view
+              wx:elif="{{item.status === 'manage'}}"
+              class="wd-act-badge wd-act-badge--wait"
+            >
+              {{item.pendingApplicantCount > 0 ? item.pendingApplicantCount + '人申请' : '我发起的'}}
+            </view>
+          </view>
+          <view class="wd-act-body">
+            <text class="wd-act-title">{{item.title}}</text>
+            <view class="wd-act-meta">
+              <text class="wd-act-meta-ico">🍴</text>
+              <text class="wd-act-meta-txt">{{item.venue}} • {{item.time}}</text>
+            </view>
+            <view class="wd-act-foot">
+              <view class="wd-act-faces">
+                <image
+                  wx:for="{{item.faces}}"
+                  wx:for-item="fv"
+                  wx:for-index="vi"
+                  wx:key="vi"
+                  class="wd-act-face"
+                  style="margin-left: {{vi === 0 ? 0 : -14}}rpx; z-index: {{item.faces.length - vi}};"
+                  src="{{fv}}"
+                  mode="aspectFill"
+                ></image>
+              </view>
+              <view wx:if="{{item.action === 'detail'}}" class="wd-act-link">
+                详情 <text class="wd-act-chev">›</text>
+              </view>
+              <view wx:else class="wd-act-manage">
+                <text class="wd-act-manage-txt">管理</text>
+                <text class="wd-act-pencil">✎</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="wd-act-list" wx:else>
+        <view
+          class="wd-act-card"
+          wx:for="{{endedActivities}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="onActivityTap"
+        >
+          <view class="wd-act-cover-wrap">
+            <image class="wd-act-cover" src="{{item.cover}}" mode="aspectFill"></image>
+            <view class="wd-act-date">
+              <text class="wd-act-date-m">{{item.month}}</text>
+              <text class="wd-act-date-d">{{item.day}}</text>
+            </view>
+            <view wx:if="{{item.status === 'ended'}}" class="wd-act-badge wd-act-badge--end">
+              已结束
+            </view>
+          </view>
+          <view class="wd-act-body">
+            <text class="wd-act-title">{{item.title}}</text>
+            <view class="wd-act-meta">
+              <text class="wd-act-meta-ico">🍴</text>
+              <text class="wd-act-meta-txt">{{item.venue}} • {{item.time}}</text>
+            </view>
+            <view class="wd-act-foot">
+              <view class="wd-act-faces">
+                <image
+                  wx:for="{{item.faces}}"
+                  wx:for-item="fv"
+                  wx:for-index="vi"
+                  wx:key="vi"
+                  class="wd-act-face"
+                  style="margin-left: {{vi === 0 ? 0 : -14}}rpx; z-index: {{item.faces.length - vi}};"
+                  src="{{fv}}"
+                  mode="aspectFill"
+                ></image>
+              </view>
+              <view class="wd-act-link">
+                详情 <text class="wd-act-chev">›</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="wd-menu-card">
+        <view class="wd-menu-row" bindtap="onOpenMessages" hover-class="wd-menu-hover">
+          <text class="wd-menu-ico">💬</text>
+          <text class="wd-menu-txt">我的私信</text>
+          <text wx:if="{{unreadMsg > 0}}" class="wd-menu-badge">{{unreadMsg}}</text>
+          <text class="wd-menu-chev">›</text>
+        </view>
+        <view class="wd-menu-row" bindtap="onMenuSettings" hover-class="wd-menu-hover">
+          <text class="wd-menu-ico">⚙</text>
+          <text class="wd-menu-txt">设置</text>
+          <text class="wd-menu-chev">›</text>
+        </view>
+        <view class="wd-menu-row" bindtap="onMenuHelp" hover-class="wd-menu-hover">
+          <view class="wd-menu-ico wd-menu-ico-q">?</view>
+          <text class="wd-menu-txt">帮助与反馈</text>
+          <text class="wd-menu-chev">›</text>
+        </view>
+        <view class="wd-menu-row wd-menu-row--last" bindtap="onMenuLogout" hover-class="wd-menu-hover">
+          <text class="wd-menu-ico">🚪</text>
+          <text class="wd-menu-txt wd-menu-txt--logout">退出登录</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="scroll-bottom-gap"></view>
+  </scroll-view>
+
+  <view class="tab-bar">
+    <view class="tab-bar-inner">
+      <view
+        class="tab-highlight"
+        style="{{tabHighlightStyle}}"
+      >
+        <view class="tab-highlight-inner"></view>
+      </view>
+      <view class="tab-row">
+        <view
+          wx:for="{{tabs}}"
+          wx:key="id"
+          class="tab-item {{activeTab === item.id ? 'tab-item--active' : ''}}"
+          bindtap="switchTab"
+          data-tab="{{item.id}}"
+          hover-class="tab-item-hover"
+        >
+          <image
+            class="tab-ico {{activeTab === item.id ? 'tab-ico--on' : ''}}"
+            src="{{item.icon}}"
+            mode="aspectFit"
+          />
+          <text class="tab-txt {{activeTab === item.id ? 'tab-txt--on' : ''}}">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

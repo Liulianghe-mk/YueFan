@@ -1,0 +1,87 @@
+<view class="page" wx:if="{{profile}}">
+  <view class="status" style="height: {{statusBarHeight}}px;"></view>
+  <view class="nav">
+    <view class="nav-back" bindtap="onBack" hover-class="nav-back-hover">‹</view>
+    <text class="nav-title">个人主页</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <scroll-view scroll-y class="main" enhanced show-scrollbar="{{false}}">
+    <view class="hero">
+      <view class="avatar-wrap">
+        <image class="avatar" src="{{profile.avatar}}" mode="aspectFill"></image>
+        <view wx:if="{{profile.verified}}" class="verify-badge">
+          <text class="verify-t">✓</text>
+        </view>
+      </view>
+      <text class="uname">{{profile.name}}</text>
+      <view class="btn-row">
+        <view class="btn-follow {{profile.followed ? 'btn-follow--on' : ''}}" bindtap="onFollowTap" hover-class="btn-hover">
+          {{profile.followed ? '已关注' : '关注'}}
+        </view>
+        <view class="btn-msg" bindtap="onMsgTap" hover-class="btn-hover">私信</view>
+      </view>
+      <text class="bio">{{profile.bio}}</text>
+    </view>
+
+    <view class="stats-bar">
+      <view class="stat-cell">
+        <text class="stat-num">{{profile.fansText}}</text>
+        <text class="stat-label">粉丝</text>
+      </view>
+      <view class="stat-div"></view>
+      <view class="stat-cell">
+        <text class="stat-num">{{profile.followingText}}</text>
+        <text class="stat-label">关注</text>
+      </view>
+      <view class="stat-div"></view>
+      <view class="stat-cell">
+        <text class="stat-num">{{profile.scoreText}}</text>
+        <text class="stat-label">美食分</text>
+      </view>
+    </view>
+
+    <view class="achieve-card">
+      <view class="achieve-tag">
+        <text class="achieve-tag-ico">🏅</text>
+        <text class="achieve-tag-txt">{{profile.mainTag}}</text>
+      </view>
+      <view class="badges-row">
+        <view class="badge-item" wx:for="{{profile.badges}}" wx:key="label">
+          <view class="badge-ico-wrap">
+            <text class="badge-ico">{{item.icon}}</text>
+          </view>
+          <text class="badge-label">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="sub-list">
+      <view
+        class="sub-row"
+        wx:for="{{subList}}"
+        wx:key="id"
+        bindtap="onSubItemTap"
+        hover-class="sub-row-hover"
+      >
+        <text class="sub-title">{{item.title}}</text>
+        <text class="sub-meta">{{item.meta}}</text>
+      </view>
+      <view wx:if="{{subList.length === 0}}" class="sub-empty">暂无内容</view>
+    </view>
+
+    <view class="scroll-gap"></view>
+  </scroll-view>
+
+  <view class="subtab-bar">
+    <view
+      wx:for="{{subTabs}}"
+      wx:key="id"
+      class="subtab {{activeSub === item.id ? 'subtab--on' : ''}}"
+      data-tab="{{item.id}}"
+      bindtap="onSubTab"
+    >
+      {{item.label}}
+    </view>
+  </view>
+</view>

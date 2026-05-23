@@ -1,0 +1,63 @@
+<view class="page">
+  <view class="search-row">
+    <view class="input-wrap">
+      <text class="ico">🔍</text>
+      <input
+        class="input"
+        type="text"
+        placeholder="店铺、约饭、地点"
+        placeholder-class="ph"
+        value="{{keyword}}"
+        focus="{{inputFocus}}"
+        confirm-type="search"
+        bindinput="onInput"
+        bindconfirm="onConfirm"
+      />
+      <view wx:if="{{keyword}}" class="clear" catchtap="onClear">✕</view>
+    </view>
+    <text class="cancel" bindtap="onConfirm">搜索</text>
+  </view>
+
+  <view wx:if="{{mode === 'hint'}}" class="hint-block">
+    <text class="hint-title">热门搜索</text>
+    <view class="tags">
+      <view
+        wx:for="{{hotTags}}"
+        wx:key="*this"
+        class="tag"
+        bindtap="onHotTagTap"
+        data-tag="{{item}}"
+      >
+        {{item}}
+      </view>
+    </view>
+    <text class="hint-tip">支持搜索店铺名、约饭主题或地点关键词</text>
+  </view>
+
+  <scroll-view wx:else scroll-y class="result-scroll" enhanced show-scrollbar="{{false}}">
+    <view wx:if="{{results.length === 0}}" class="empty">
+      <text class="empty-title">未找到相关内容</text>
+      <text class="empty-sub">换个关键词试试</text>
+    </view>
+    <view
+      wx:for="{{results}}"
+      wx:key="type-{{item.type}}-{{item.id}}"
+      class="cell"
+      bindtap="onResultTap"
+      data-type="{{item.type}}"
+      data-id="{{item.id}}"
+      hover-class="cell-hover"
+    >
+      <image class="thumb" src="{{item.cover}}" mode="aspectFill" />
+      <view class="cell-body">
+        <view class="row-top">
+          <text class="badge">{{item.badge}}</text>
+          <text class="cell-title">{{item.title}}</text>
+        </view>
+        <text class="cell-sub">{{item.subtitle}}</text>
+      </view>
+      <text class="chev">›</text>
+    </view>
+    <view class="scroll-gap"></view>
+  </scroll-view>
+</view>

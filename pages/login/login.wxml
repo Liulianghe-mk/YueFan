@@ -1,0 +1,186 @@
+<view class="page {{isAuthFormPage ? 'page--auth' : ''}}">
+  <!-- 登录 / 注册（统一设计稿） -->
+  <view wx:if="{{isAuthFormPage}}" class="reg-page">
+    <view class="reg-status" style="height: {{statusBarHeight}}px;"></view>
+    <view class="reg-nav">
+      <view class="reg-back" bindtap="onNavBack" hover-class="reg-back-hover">
+        <text class="reg-back-icon">‹</text>
+      </view>
+      <text class="reg-nav-title">{{isRegisterPage ? '注册' : '登录'}}</text>
+      <view class="reg-nav-placeholder"></view>
+    </view>
+
+    <scroll-view scroll-y class="reg-scroll" enhanced show-scrollbar="{{false}}">
+      <view class="reg-body">
+        <block wx:if="{{isRegisterPage}}">
+          <text class="reg-heading">加入约饭，发现美食社交</text>
+          <text class="reg-sub">在这个充满烟火气的社区，与志同道合的朋友共进晚餐。</text>
+        </block>
+        <block wx:else>
+          <text class="reg-heading">欢迎回来，继续约饭之旅</text>
+          <text class="reg-sub">登录你的账号，与美食与朋友再次相聚。</text>
+        </block>
+
+        <view class="reg-form">
+          <view class="field">
+            <text class="label">账号</text>
+            <input
+              wx:if="{{isRegisterPage}}"
+              class="input input--pill"
+              type="text"
+              maxlength="32"
+              placeholder="请输入账号"
+              placeholder-class="input-ph"
+              value="{{registerForm.username}}"
+              bindinput="onRegUsernameInput"
+            />
+            <input
+              wx:else
+              class="input input--pill"
+              type="text"
+              maxlength="32"
+              placeholder="请输入账号"
+              placeholder-class="input-ph"
+              value="{{credentials.username}}"
+              bindinput="onLoginUsernameInput"
+            />
+          </view>
+
+          <view class="field">
+            <text class="label">{{isRegisterPage ? '设置密码' : '密码'}}</text>
+            <view class="input-wrap">
+              <input
+                wx:if="{{isRegisterPage}}"
+                class="input input--pill input--pwd"
+                password="{{!showPassword}}"
+                maxlength="20"
+                placeholder="6-20位字母及数字组合"
+                placeholder-class="input-ph"
+                value="{{registerForm.password}}"
+                bindinput="onRegPasswordInput"
+              />
+              <input
+                wx:else
+                class="input input--pill input--pwd"
+                password="{{!showPassword}}"
+                maxlength="20"
+                placeholder="6-20位字母及数字组合"
+                placeholder-class="input-ph"
+                value="{{credentials.password}}"
+                bindinput="onPasswordInput"
+              />
+              <view class="pwd-toggle" bindtap="onTogglePassword">
+                <text class="pwd-toggle-icon">{{showPassword ? '👁' : '👁‍🗨'}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="reg-legal" bindtap="onToggleAgreed">
+          <view class="reg-check {{agreed ? 'reg-check--on' : ''}}">
+            <text wx:if="{{agreed}}" class="reg-check-mark">✓</text>
+          </view>
+          <view class="reg-legal-text-wrap">
+            <text class="reg-legal-text">我已阅读并同意 </text>
+            <text class="reg-legal-link" catchtap="onLegalTap" data-type="terms">用户协议</text>
+            <text class="reg-legal-text"> 和 </text>
+            <text class="reg-legal-link" catchtap="onLegalTap" data-type="privacy">隐私政策</text>
+          </view>
+        </view>
+
+        <button
+          wx:if="{{isRegisterPage}}"
+          class="btn btn-primary btn-reg"
+          loading="{{submitting}}"
+          disabled="{{submitting}}"
+          bindtap="onRegisterSubmit"
+        >立即注册</button>
+        <button
+          wx:else
+          class="btn btn-primary btn-reg"
+          loading="{{submitting}}"
+          disabled="{{submitting}}"
+          bindtap="onAccountLogin"
+        >立即登录</button>
+
+        <view wx:if="{{!isRegisterPage && showDevLogin}}" class="reg-dev" bindtap="onDevLogin">开发者快捷登录</view>
+
+        <view class="reg-footer">
+          <block wx:if="{{isRegisterPage}}">
+            <text class="reg-footer-text">已有账号？</text>
+            <text class="reg-footer-link" data-mode="login" bindtap="onSwitchMode">去登录</text>
+          </block>
+          <block wx:else>
+            <text class="reg-footer-text">还没有账号？</text>
+            <text class="reg-footer-link" data-mode="register" bindtap="onSwitchMode">去注册</text>
+          </block>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 完善资料 / 编辑资料 -->
+  <view wx:else class="profile-page">
+    <view class="reg-status" style="height: {{statusBarHeight}}px;"></view>
+    <view class="reg-nav">
+      <view class="reg-back" bindtap="onNavBack" hover-class="reg-back-hover">
+        <text class="reg-back-icon">‹</text>
+      </view>
+      <text class="reg-nav-title">{{showEditOnly ? '编辑资料' : '完善资料'}}</text>
+      <view class="reg-nav-placeholder"></view>
+    </view>
+
+    <scroll-view scroll-y class="reg-scroll" enhanced show-scrollbar="{{false}}">
+      <view class="reg-body">
+        <view class="panel">
+          <text class="panel-desc panel-desc--top">{{showEditOnly ? '修改后将同步到「我的」页面' : '设置昵称与头像，完成资料后即可使用'}}</text>
+
+          <view class="avatar-row">
+            <view class="avatar-picker">
+              <view class="avatar-img-wrap">
+                <image class="avatar-img" src="{{avatarSrc}}" mode="aspectFill" />
+                <button
+                  class="avatar-hit"
+                  open-type="chooseAvatar"
+                  bindchooseavatar="onChooseAvatar"
+                />
+              </view>
+              <text class="avatar-tip" bindtap="pickAvatarFromAlbum">点击换头像</text>
+            </view>
+          </view>
+
+          <view class="field">
+            <text class="label">昵称</text>
+            <input
+              class="input input--pill"
+              type="text"
+              maxlength="20"
+              placeholder="2-20 个字符"
+              placeholder-class="input-ph"
+              value="{{form.nickname}}"
+              bindinput="onNicknameInput"
+            />
+          </view>
+
+          <view class="field">
+            <text class="label">个人简介（选填）</text>
+            <textarea
+              class="textarea"
+              maxlength="120"
+              placeholder="例如：爱吃川菜，周末常探店"
+              value="{{form.bio}}"
+              bindinput="onBioInput"
+            />
+          </view>
+
+          <button
+            class="btn btn-primary btn-reg"
+            loading="{{submitting}}"
+            disabled="{{submitting}}"
+            bindtap="onRegisterSubmit"
+          >{{submitLabel}}</button>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

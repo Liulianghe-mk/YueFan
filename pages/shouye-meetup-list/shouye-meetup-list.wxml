@@ -1,0 +1,55 @@
+<view class="page">
+  <block wx:if="{{loading && list.length === 0}}">
+    <view class="state">
+      <text class="state-txt">加载中...</text>
+    </view>
+  </block>
+  <block wx:elif="{{list.length === 0}}">
+    <view class="state">
+      <text class="state-title">暂无约饭</text>
+      <text class="state-txt">附近还没有已发布的约饭活动</text>
+      <view class="state-btn" bindtap="onGoYuefan">去约饭 Tab 看看</view>
+    </view>
+  </block>
+  <block wx:else>
+    <scroll-view scroll-y class="scroll" enhanced show-scrollbar="{{false}}">
+      <view class="hint">共 {{list.length}} 场可参与的约饭</view>
+      <view class="meetup-list">
+        <view
+          wx:for="{{list}}"
+          wx:key="id"
+          wx:for-item="m"
+          class="meetup-card"
+          bindtap="onItemTap"
+          data-id="{{m.id}}"
+          hover-class="meetup-card-hover"
+        >
+          <view class="avatar-box">
+            <image class="avatar {{m.verified ? 'ring' : ''}}" src="{{m.hostAvatar}}" mode="aspectFill"></image>
+            <view wx:if="{{m.verified}}" class="v-badge">V</view>
+          </view>
+          <view class="meetup-body">
+            <text class="m-title">{{m.title}}</text>
+            <view class="m-info">
+              <text class="m-icon">📍</text>
+              <text class="m-text">{{m.location}}</text>
+            </view>
+            <view class="m-meta">
+              <view class="time-box">
+                <text class="m-icon red">🕒</text>
+                <text class="m-text dark">{{m.time}}</text>
+              </view>
+              <view class="count-badge {{m.badgeActive ? 'active' : ''}}">
+                <text>{{m.joined}}/{{m.total}} 已加入</text>
+              </view>
+            </view>
+          </view>
+          <view class="m-action">
+            <view class="btn {{m.ctaPrimary ? 'primary-btn' : 'gray-btn'}}">{{m.ctaLabel}}</view>
+          </view>
+        </view>
+      </view>
+      <view class="foot-gap"></view>
+    </scroll-view>
+  </block>
+</view>

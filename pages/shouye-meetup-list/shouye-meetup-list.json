@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "附近的约饭",
+  "navigationBarBackgroundColor": "#faf7f2",
+  "navigationBarTextStyle": "black",
+  "enablePullDownRefresh": true,
+  "usingComponents": {}
+}

@@ -1,0 +1,99 @@
+<scroll-view scroll-y class="page" wx:if="{{act}}" enhanced show-scrollbar="{{false}}">
+  <view class="hero">
+    <image class="cover" src="{{act.cover}}" mode="aspectFill"></image>
+    <view
+      wx:if="{{act.status === 'confirmed'}}"
+      class="badge badge--ok"
+    >
+      {{act.statusText}}
+    </view>
+    <view
+      wx:elif="{{act.status === 'pending'}}"
+      class="badge badge--wait"
+    >
+      {{act.statusText}}
+    </view>
+    <view wx:elif="{{act.status === 'ended'}}" class="badge badge--end">{{act.statusText}}</view>
+  </view>
+
+  <view class="sheet">
+    <text class="title">{{act.title}}</text>
+
+    <view class="row">
+      <text class="row-ico">📅</text>
+      <text class="row-txt">{{act.dateText}}</text>
+    </view>
+    <view class="row">
+      <text class="row-ico">🕐</text>
+      <text class="row-txt">{{act.timeText}}</text>
+    </view>
+    <view class="row">
+      <text class="row-ico">🍴</text>
+      <text class="row-txt">{{act.venue}}</text>
+    </view>
+
+    <view class="host">
+      <image class="host-av" src="{{act.hostAvatar}}" mode="aspectFill"></image>
+      <view class="host-info">
+        <text class="host-name">主理人 · {{act.hostName}}</text>
+        <text class="host-sub">参与者 {{act.joined}}/{{act.total}} 人</text>
+      </view>
+    </view>
+
+    <view class="faces-row">
+      <image
+        wx:for="{{act.faces}}"
+        wx:for-item="fv"
+        wx:for-index="fi"
+        wx:key="fi"
+        class="face"
+        style="margin-left: {{fi === 0 ? 0 : -12}}rpx; z-index: {{act.faces.length - fi}};"
+        src="{{fv}}"
+        mode="aspectFill"
+      ></image>
+    </view>
+
+    <view class="line"></view>
+    <text class="desc">{{act.desc}}</text>
+
+    <view wx:if="{{isManage && applications.length}}" class="apps-block">
+      <text class="apps-title">待审核报名（{{applications.length}}）</text>
+      <view wx:for="{{applications}}" wx:key="id" wx:for-item="app" class="app-row">
+        <image class="app-av" src="{{app.avatarUrl}}" mode="aspectFill"></image>
+        <text class="app-name">{{app.nickname}}</text>
+        <view class="app-actions">
+          <view
+            class="app-btn app-btn--ok"
+            data-member-id="{{app.id}}"
+            bindtap="onApprove"
+            hover-class="app-btn-hover"
+          >
+            通过
+          </view>
+          <view
+            class="app-btn app-btn--no"
+            data-member-id="{{app.id}}"
+            bindtap="onReject"
+            hover-class="app-btn-hover"
+          >
+            拒绝
+          </view>
+        </view>
+      </view>
+    </view>
+    <view wx:elif="{{isManage}}" class="apps-empty">
+      <text>暂无待审核报名</text>
+    </view>
+  </view>
+
+  <view class="bottom-gap"></view>
+</scroll-view>
+
+<view class="foot" wx:if="{{act}}">
+  <view class="foot-chat" bindtap="onChat" hover-class="foot-hover">私聊</view>
+  <view class="foot-primary" bindtap="onPrimary" hover-class="foot-primary-hover">
+    <text wx:if="{{act.actionMode === 'manage'}}">查看约饭详情</text>
+    <text wx:elif="{{act.actionMode === 'ended'}}">查看回顾</text>
+    <text wx:else>活动签到</text>
+  </view>
+</view>

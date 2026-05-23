@@ -1,0 +1,114 @@
+<view class="page" wx:if="{{detail}}">
+  <view class="hero">
+    <image class="hero-img" src="{{detail.cover}}" mode="aspectFill"></image>
+    <view class="hero-tag">{{detail.categoryTag}}</view>
+  </view>
+
+  <view class="sheet-wrap">
+    <view class="summary-card">
+      <text class="sum-title">{{detail.title}}</text>
+      <view class="sum-row">
+        <text class="sum-ico">📅</text>
+        <text class="sum-txt">{{detail.dateText}}</text>
+      </view>
+      <view class="sum-row">
+        <text class="sum-ico">🕐</text>
+        <text class="sum-txt">{{detail.timeRange}}</text>
+      </view>
+      <view class="sum-row">
+        <text class="sum-ico">💴</text>
+        <text class="sum-price">{{detail.priceText}}</text>
+      </view>
+
+      <view class="part-head">
+        <text class="part-left">参与者 ({{detail.joined}}/{{detail.total}})</text>
+        <text class="part-right" wx:if="{{detail.needMore > 0}}">还差{{detail.needMore}}人满</text>
+      </view>
+      <view class="part-avatars">
+        <image
+          wx:for="{{detail.participantAvatars}}"
+          wx:for-item="pu"
+          wx:for-index="pi"
+          wx:key="pi"
+          class="part-face"
+          src="{{pu}}"
+          mode="aspectFill"
+        ></image>
+        <view wx:for="{{placeholderIndexes}}" wx:for-item="ph" wx:key="ph" class="part-ph">
+          <text class="part-ph-q">?</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="msg-card">
+      <view class="msg-accent"></view>
+      <view class="msg-inner">
+        <view class="msg-head">
+          <text class="msg-bubble">💬</text>
+          <text class="msg-title">发起人留言</text>
+        </view>
+        <text class="msg-body">{{detail.organizerMessage}}</text>
+      </view>
+    </view>
+
+    <view class="host-card">
+      <image class="host-av" src="{{detail.organizer.avatar}}" mode="aspectFill"></image>
+      <view class="host-mid">
+        <view class="host-name-row">
+          <text class="host-name">{{detail.organizer.name}}</text>
+          <view wx:if="{{detail.organizer.verified}}" class="host-check">
+            <text class="host-check-t">✓</text>
+          </view>
+          <view class="host-pill">{{detail.organizer.certifiedTag}}</view>
+        </view>
+        <view class="host-stats">
+          <text class="host-stat">★ {{detail.organizer.rating}} ({{detail.organizer.ratingCount}})</text>
+          <text class="host-dot">·</text>
+          <text class="host-stat">🍴 已发起{{detail.organizer.eventsCount}}场</text>
+        </view>
+        <text class="host-pref">{{detail.organizer.preference}}</text>
+      </view>
+      <view class="host-more" bindtap="onOrganizerMore" hover-class="host-more-hover">
+        <text class="host-more-ico">›</text>
+      </view>
+    </view>
+
+    <view class="loc-block">
+      <view class="loc-head">
+        <text class="loc-title">地点</text>
+        <view class="loc-open" bindtap="onOpenMap" hover-class="loc-open-hover">
+          <text class="loc-map-ico">🗺</text>
+          <text class="loc-open-txt">在地图中打开</text>
+        </view>
+      </view>
+      <view class="loc-row">
+        <text class="loc-pin">📍</text>
+        <text class="loc-addr">{{detail.address}}</text>
+      </view>
+      <image class="loc-map" src="{{detail.mapThumb}}" mode="aspectFill" bindtap="onOpenMap"></image>
+    </view>
+
+    <view class="bottom-spacer"></view>
+  </view>
+
+  <view class="foot">
+    <view class="foot-inner">
+      <view class="foot-chat" bindtap="onPrivateChat" hover-class="foot-chat-hover">
+        <view class="foot-chat-ico-wrap" aria-hidden="true">
+          <text class="foot-chat-emoji">💬</text>
+        </view>
+        <view class="foot-chat-text">
+          <text class="foot-chat-title">私聊</text>
+          <text class="foot-chat-sub">联系发起人</text>
+        </view>
+      </view>
+      <view class="foot-join {{detail.joinedByMe ? 'foot-join--on' : ''}}" bindtap="onJoinNow" hover-class="foot-join-hover">
+        <view class="foot-join-content">
+          <text class="foot-join-title">{{detail.joinBtnTitle || '立即加入'}}</text>
+          <text class="foot-join-sub">{{detail.joinBtnSub || '报名约饭'}}</text>
+        </view>
+        <text class="foot-join-arrow">›</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,51 @@
+<scroll-view wx:if="{{item}}" scroll-y class="page" enhanced show-scrollbar="{{false}}">
+  <view class="hero">
+    <image class="cover" src="{{item.image}}" mode="aspectFill" />
+    <view class="rating-chip">
+      <text class="star">★</text>
+      <text>{{item.rating}}</text>
+    </view>
+  </view>
+
+  <view class="sheet">
+    <text class="name">{{item.name}}</text>
+    <view class="tags">
+      <text wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag" class="tag">{{tag}}</text>
+    </view>
+    <view class="price-row">
+      <text class="price">¥{{item.price}}</text>
+      <text class="unit">人均参考</text>
+    </view>
+
+    <view class="block">
+      <text class="block-title">地址与营业</text>
+      <view class="row">
+        <text class="row-ico">📍</text>
+        <text class="row-txt">{{item.address}}</text>
+      </view>
+      <view class="row">
+        <text class="row-ico">🕒</text>
+        <text class="row-txt">{{item.hours}}</text>
+      </view>
+    </view>
+
+    <view class="block">
+      <text class="block-title">店家介绍</text>
+      <text class="para">{{item.intro}}</text>
+    </view>
+
+    <view class="block block--last">
+      <text class="block-title">招牌与推荐</text>
+      <view wx:for="{{item.dishes}}" wx:key="name" wx:for-item="dish" class="dish">
+        <text class="dish-name">{{dish.name}}</text>
+        <text class="dish-desc">{{dish.desc}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="foot-gap"></view>
+</scroll-view>
+
+<view class="foot" wx:if="{{item}}">
+  <view class="foot-btn" bindtap="onReserve">预约 / 咨询</view>
+</view>
